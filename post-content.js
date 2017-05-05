@@ -7,6 +7,14 @@ window._wpGutenbergPost = {
 	},
 	content: {
 		raw: [
+			'<!-- wp:core/cover-image -->',
+			'<section className="cover-image" data-url="https://cldup.com/GCwahb3aOb.jpg" style={ { backgroundImage: \'url("https://cldup.com/GCwahb3aOb.jpg");\' } }><h2>Gutenberg Editor</h2></section>',
+			'<!-- /wp:core/cover-image -->',
+
+			'<!-- wp:core/heading -->',
+			'<h1>Welcome to the Gutenberg Editor</h1>',
+			'<!-- /wp:core/heading -->',
+
 			'<!-- wp:core/text -->',
 			'<p>The goal of this new editor is to make adding rich content to WordPress simple and enjoyable. This whole post is composed of <em>pieces of content</em>—somewhat similar to LEGO bricks—that you can move around and interact with. Move your cursor around and you\'ll notice the different blocks light up with outlines and arrows. Press the arrows to reposition blocks quickly, without fearing about losing things in the process of copying and pasting.</p>',
 			'<p>What you are reading now is a <strong>text block</strong>, the most basic block of all. A text block can have multiple paragraphs, if that\'s how you prefer to write your posts. But you can also split it by hitting enter twice. Once blocks are split they get their own controls to be moved freely around the post...</p>',
