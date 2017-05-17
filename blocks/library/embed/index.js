@@ -168,33 +168,31 @@ registerBlock( 'core/embed', {
 
 			const domain = url.split( '/' )[ 2 ].replace( /^www\./, '' );
 			const cannotPreview = this.noPreview.includes( domain );
-			const embedDataType = this.videoEmbeds.includes( domain ) ? 'core/embed/video' : 'core/embed';
+			const figureClass = this.videoEmbeds.includes( domain ) ? 'blocks-embed__video' : 'blocks-embed';
 
 			return (
-				<div data-type={ embedDataType }>
-					<figure className="blocks-embed">
-						{ ( cannotPreview ) ? (
-							<Placeholder icon="cloud" label={ wp.i18n.__( 'Embed URL' ) } className="blocks-embed">
-								<p className="components-placeholder__error"><a href={ url }>{ url }</a></p>
-								<p className="components-placeholder__error">{ wp.i18n.__( 'Previews for this are unavailable in the editor, sorry!' ) }</p>
-							</Placeholder>
-						) : (
-							<Sandbox html={ oEmbedHtml } />
-						) }
-						{ ( caption && caption.length > 0 ) || !! focus ? (
-							<Editable
-								tagName="figcaption"
-								placeholder={ wp.i18n.__( 'Write caption…' ) }
-								value={ caption }
-								focus={ focus }
-								onFocus={ setFocus }
-								onChange={ ( value ) => setAttributes( { caption: value } ) }
-								inline
-								inlineToolbar
-							/>
-						) : null }
-					</figure>
-				</div>
+				<figure className={ figureClass }>
+					{ ( cannotPreview ) ? (
+						<Placeholder icon="cloud" label={ wp.i18n.__( 'Embed URL' ) } className="blocks-embed">
+							<p className="components-placeholder__error"><a href={ url }>{ url }</a></p>
+							<p className="components-placeholder__error">{ wp.i18n.__( 'Previews for this are unavailable in the editor, sorry!' ) }</p>
+						</Placeholder>
+					) : (
+						<Sandbox html={ oEmbedHtml } />
+					) }
+					{ ( caption && caption.length > 0 ) || !! focus ? (
+						<Editable
+							tagName="figcaption"
+							placeholder={ wp.i18n.__( 'Write caption…' ) }
+							value={ caption }
+							focus={ focus }
+							onFocus={ setFocus }
+							onChange={ ( value ) => setAttributes( { caption: value } ) }
+							inline
+							inlineToolbar
+						/>
+					) : null }
+				</figure>
 			);
 		}
 	},
