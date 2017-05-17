@@ -293,13 +293,19 @@ function gutenburg_api_do_render( WP_REST_Request $request ) {
 	return array( 'html' => do_blocks( $block_content ) );
 }
 
-add_action( 'rest_api_init', function () {
+/**
+ * Registers the rendering API endpoint.
+ *
+ * @since 0.1.1
+ */
+function gutenburg_register_render_endpoint() {
 	register_rest_route( 'gutenburg/v1', '/render/', array(
 		'methods'  => 'POST',
 		'callback' => 'gutenburg_api_do_render',
 	) );
-} );
+}
 
+add_action( 'rest_api_init', 'gutenburg_register_render_endpoint' );
 
 /**
  * Registers additional links in the post/page screens to edit any post/page in
