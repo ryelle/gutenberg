@@ -285,12 +285,14 @@ add_action( 'admin_init', 'gutenberg_add_edit_links_filters' );
  * server side rendering blocks to render content.
  *
  * @since 0.1.1
- *
+ * @param WP_REST_Request $request The REST Requst
  * @return string Rendered content.
  */
 function gutenburg_api_do_render( WP_REST_Request $request ) {
 	$block_content = $request->get_param( 'content' );
-	return array( 'html' => do_blocks( $block_content ) );
+	return array(
+		'html' => do_blocks( $block_content )
+	);
 }
 
 /**
@@ -506,7 +508,7 @@ function the_gutenberg_project() {
  *
  * @param array $content Block data
  *
- * @returns string Rendered block content, using WP_oEmbed
+ * @returns string Rendered block content, using WP_oEmbed.
  */
 function gutenberg_block_core_oembed( $content ) {
 	$oembed = new WP_oEmbed();
