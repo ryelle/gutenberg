@@ -502,11 +502,15 @@ function the_gutenberg_project() {
 }
 
 /**
- * Core server side block registration.
+ * Server side block renderer for core/oembed.
+ *
+ * @param array $content Block data
+ *
+ * @returns string Rendered block content, using WP_oEmbed
  */
-register_block( 'core/oembed', array(
-	'render' => function( $content ) {
-		$oembed = new WP_oEmbed();
-		return $oembed->get_html( $content['url'] );
-	}
-) );
+function gutenberg_block_core_oembed( $content ) {
+	$oembed = new WP_oEmbed();
+	return $oembed->get_html( $content['url'] );
+}
+
+register_block( 'core/oembed', 'gutenberg_block_core_oembed' );
