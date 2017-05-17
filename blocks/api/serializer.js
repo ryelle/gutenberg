@@ -65,29 +65,25 @@ export function getCommentAttributes( realAttributes, expectedAttributes ) {
 /**
  * Takes block details and returns the serialized content.
  *
- * @param {String} blockType			The type of block, e.g. 'core/embed'
- * @param {Object} blockAttributes		The block's attributes
- * @param {Object} blockSettings		The block's settings object
- * @param {String} saveContent			Content to save into the post
- * @return {String}						The post content
+ * @return {String}	The post content
  */
-export function serializeBlock( blockType, blockAttributes, blockSettings, saveContent ) {
+export function serializeBlock( { type, attributes, settings, saveContent } ) {
 	const beautifyOptions = {
 		indent_inner_html: true,
 		wrap_line_length: 0,
 	};
 	return (
 		'<!-- wp:' +
-		blockType +
+		type +
 		' ' +
 		getCommentAttributes(
-			blockAttributes,
-			parseBlockAttributes( saveContent, blockSettings )
+			attributes,
+			parseBlockAttributes( saveContent, settings )
 		) +
 		'-->' +
 		( saveContent ? '\n' + beautifyHtml( saveContent, beautifyOptions ) + '\n' : '' ) +
 		'<!-- /wp:' +
-		blockType +
+		type +
 		' -->'
 	) + '\n\n';
 }
@@ -103,6 +99,11 @@ export default function serialize( blocks ) {
 		const blockType = block.blockType;
 		const settings = getBlockSettings( blockType );
 		const saveContent = getSaveContent( settings.save, block.attributes );
-		return memo + serializeBlock( blockType, block.attributes, settings, saveContent );
+		return memo + serializeBlock( {
+			type: blockType,
+			attributes: block.attributes,
+			settings,
+			saveContent,
+		} );
 	}, '' );
 }

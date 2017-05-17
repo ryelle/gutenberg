@@ -81,7 +81,7 @@ registerBlock( 'core/embed', {
 			this.doServerSideRender = this.doServerSideRender.bind( this );
 			// Copies the block's url so we can edit it without having the block update
 			this.state = {
-				oembed_html: '',
+				oEmbedHtml: '',
 				error: false,
 				fetching: false,
 			};
@@ -94,7 +94,12 @@ registerBlock( 'core/embed', {
 			const { url } = this.props.attributes;
 			const form = new FormData();
 			// core/oembed is a server side block for rendering the WP_oEmbed functionality
-			const oembed_block = serializeBlock( 'core/oembed', { url }, {}, '' );
+			const oembed_block = serializeBlock( {
+				type: 'core/oembed',
+				attributes: { url },
+				settings: {},
+				saveContent: '',
+			} );
 			form.append( 'content', oembed_block );
 			this.setState( { error: false, fetching: true } );
 			fetch( api_url, {
@@ -105,7 +110,7 @@ registerBlock( 'core/embed', {
 					response.json().then( ( obj ) => {
 						const html = obj.html.trim();
 						if ( html ) {
-							this.setState( { oembed_html: html } );
+							this.setState( { oEmbedHtml: html } );
 						} else {
 							this.setState( { error: true } );
 						}
@@ -116,11 +121,11 @@ registerBlock( 'core/embed', {
 		}
 
 		render() {
-			const { oembed_html, error, fetching } = this.state;
+			const { oEmbedHtml, error, fetching } = this.state;
 			const { url, caption } = this.props.attributes;
 			const { setAttributes, focus, setFocus } = this.props;
 
-			if ( ! oembed_html ) {
+			if ( ! oEmbedHtml ) {
 				return (
 					<Placeholder icon="cloud" label={ wp.i18n.__( 'Embed URL' ) } className="blocks-embed">
 						<form onSubmit={ this.doServerSideRender }>
@@ -161,7 +166,7 @@ registerBlock( 'core/embed', {
 						</Placeholder>
 					) : (
 						<div className="iframe-overlay">
-							<Sandbox html={ oembed_html } />
+							<Sandbox html={ oEmbedHtml } />
 						</div>
 					) }
 					{ ( caption && caption.length > 0 ) || !! focus ? (
