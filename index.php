@@ -515,4 +515,6 @@ function gutenberg_block_core_oembed( $content ) {
 	return $oembed->get_html( $content['url'] );
 }
 
-register_block( 'core/oembed', 'gutenberg_block_core_oembed' );
+register_block( 'core/oembed', array(
+	'render' => 'gutenberg_block_core_oembed'
+) );
