@@ -281,6 +281,27 @@ function gutenberg_add_edit_links_filters() {
 add_action( 'admin_init', 'gutenberg_add_edit_links_filters' );
 
 /**
+ * API endpoint for server side rendering so the editor can use the registered
+ * server side rendering blocks to render content.
+ *
+ * @since 0.1.1
+ *
+ * @return string Rendered content.
+ */
+function gutenburg_api_do_render( WP_REST_Request $request ) {
+	$block_content = $request->get_param( 'content' );
+	return array( 'html' => do_blocks( $block_content ) );
+}
+
+add_action( 'rest_api_init', function () {
+	register_rest_route( 'gutenburg/v1', '/render/', array(
+		'methods'  => 'POST',
+		'callback' => 'gutenburg_api_do_render',
+	) );
+} );
+
+
+/**
  * Registers additional links in the post/page screens to edit any post/page in
  * the Gutenberg editor.
  *
@@ -473,3 +494,13 @@ function the_gutenberg_project() {
 	</div>
 	<?php
 }
+
+/**
+ * Core server side block registration.
+ */
+register_block( 'core/oembed', array(
+	'render' => function( $content ) {
+		$oembed = new WP_oEmbed();
+		return $oembed->get_html( $content['url'] );
+	}
+) );

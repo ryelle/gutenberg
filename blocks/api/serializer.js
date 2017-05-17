@@ -43,7 +43,7 @@ export function getSaveContent( save, attributes ) {
  *
  * @param  {Object} realAttributes     Actual block attributes
  * @param  {Object} expectedAttributes Expected block attributes
- * @return {string}                    Comment attributes
+ * @return {String}                    Comment attributes
  */
 export function getCommentAttributes( realAttributes, expectedAttributes ) {
 	// Find difference and build into object subset of attributes.
@@ -51,7 +51,6 @@ export function getCommentAttributes( realAttributes, expectedAttributes ) {
 		Object.keys( realAttributes ),
 		Object.keys( expectedAttributes )
 	);
-
 	// Serialize the comment attributes
 	return keys.reduce( ( memo, key ) => {
 		const value = realAttributes[ key ];
@@ -61,6 +60,36 @@ export function getCommentAttributes( realAttributes, expectedAttributes ) {
 
 		return memo + `${ key }="${ value }" `;
 	}, '' );
+}
+
+/**
+ * Takes block details and returns the serialized content.
+ *
+ * @param {String} blockType			The type of block, e.g. 'core/embed'
+ * @param {Object} blockAttributes		The block's attributes
+ * @param {Object} blockSettings		The block's settings object
+ * @param {String} saveContent			Content to save into the post
+ * @return {String}						The post content
+ */
+export function serializeBlock( blockType, blockAttributes, blockSettings, saveContent ) {
+	const beautifyOptions = {
+		indent_inner_html: true,
+		wrap_line_length: 0,
+	};
+	return (
+		'<!-- wp:' +
+		blockType +
+		' ' +
+		getCommentAttributes(
+			blockAttributes,
+			parseBlockAttributes( saveContent, blockSettings )
+		) +
+		'-->' +
+		( saveContent ? '\n' + beautifyHtml( saveContent, beautifyOptions ) + '\n' : '' ) +
+		'<!-- /wp:' +
+		blockType +
+		' -->'
+	) + '\n\n';
 }
 
 /**
@@ -74,24 +103,6 @@ export default function serialize( blocks ) {
 		const blockType = block.blockType;
 		const settings = getBlockSettings( blockType );
 		const saveContent = getSaveContent( settings.save, block.attributes );
-		const beautifyOptions = {
-			indent_inner_html: true,
-			wrap_line_length: 0,
-		};
-
-		return memo + (
-			'<!-- wp:' +
-			blockType +
-			' ' +
-			getCommentAttributes(
-				block.attributes,
-				parseBlockAttributes( saveContent, settings )
-			) +
-			'-->' +
-			( saveContent ? '\n' + beautifyHtml( saveContent, beautifyOptions ) + '\n' : '' ) +
-			'<!-- /wp:' +
-			blockType +
-			' -->'
-		) + '\n\n';
+		return memo + serializeBlock( blockType, block.attributes, settings, saveContent );
 	}, '' );
 }
