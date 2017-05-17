@@ -171,7 +171,7 @@ registerBlock( 'core/embed', {
 			const embedDataType = this.videoEmbeds.includes( domain ) ? 'core/embed/video' : 'core/embed';
 
 			return (
-				<div className="editor-visual-editor__block" data-type={ embedDataType }>
+				<div data-type={ embedDataType }>
 					<figure className="blocks-embed">
 						{ ( cannotPreview ) ? (
 							<Placeholder icon="cloud" label={ wp.i18n.__( 'Embed URL' ) } className="blocks-embed">
