@@ -7,7 +7,7 @@ import sinon from 'sinon';
 /**
  * WordPress dependencies
  */
-import { getBlocks, unregisterBlock, registerBlock, createBlock } from 'blocks';
+import { getRegisteredBlocks, unregisterBlock, registerBlock, createBlock } from 'blocks';
 
 /**
  * Internal dependencies
@@ -45,7 +45,7 @@ describe( 'actions', () => {
 
 	describe( 'mergeBlocks', () => {
 		afterEach( () => {
-			getBlocks().forEach( ( block ) => {
+			getRegisteredBlocks().forEach( ( block ) => {
 				unregisterBlock( block.slug );
 			} );
 		} );

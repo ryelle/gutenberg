@@ -134,7 +134,7 @@ class InserterMenu extends wp.element.Component {
 		const sortedByCategory = flow(
 			this.getVisibleBlocks,
 			this.sortBlocksByCategory,
-		)( wp.blocks.getBlocks() );
+		)( wp.blocks.getRegisteredBlocks() );
 
 		// If the block list is empty return early.
 		if ( ! sortedByCategory.length ) {
@@ -149,7 +149,7 @@ class InserterMenu extends wp.element.Component {
 		const sortedByCategory = flow(
 			this.getVisibleBlocks,
 			this.sortBlocksByCategory,
-		)( wp.blocks.getBlocks() );
+		)( wp.blocks.getRegisteredBlocks() );
 
 		// If the block list is empty return early.
 		if ( ! sortedByCategory.length ) {
@@ -222,7 +222,7 @@ class InserterMenu extends wp.element.Component {
 
 	render() {
 		const { position = 'top' } = this.props;
-		const visibleBlocksByCategory = this.getVisibleBlocksByCategory( wp.blocks.getBlocks() );
+		const visibleBlocksByCategory = this.getVisibleBlocksByCategory( wp.blocks.getRegisteredBlocks() );
 		const positionClasses = position.split( ' ' ).map( ( pos ) => `is-${ pos }` );
 		const className = classnames( 'editor-inserter__menu', positionClasses );
 
