@@ -8,6 +8,9 @@
  * @package gutenberg
  */
 
+define( 'GUTENBERG__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'GUTENBERG__BLOCKS_LIBRARY_DIR', GUTENBERG__PLUGIN_DIR . 'blocks/library' );
+
 /**
  * Gutenberg's Menu.
  *
@@ -565,3 +568,8 @@ function the_gutenberg_project() {
 	</div>
 	<?php
 }
+
+function gutenberg_load_blocks_server_side_redering() {
+	require_once GUTENBERG__BLOCKS_LIBRARY_DIR . '/latest-posts/index.php';
+}
+add_action( 'init', 'gutenberg_load_blocks_server_side_redering' );
