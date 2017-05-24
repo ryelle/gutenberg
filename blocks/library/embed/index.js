@@ -3,7 +3,7 @@
  */
 import Button from 'components/button';
 import Placeholder from 'components/placeholder';
-import Sandbox from 'components/sandbox';
+import HtmlEmbed from 'components/html-embed';
 
 /**
  * Internal dependencies
@@ -168,17 +168,16 @@ registerBlock( 'core/embed', {
 
 			const domain = url.split( '/' )[ 2 ].replace( /^www\./, '' );
 			const cannotPreview = this.noPreview.includes( domain );
-			const figureClass = this.videoEmbeds.includes( domain ) ? 'blocks-embed__video' : 'blocks-embed';
 
 			return (
-				<figure className={ figureClass }>
+				<figure>
 					{ ( cannotPreview ) ? (
 						<Placeholder icon="cloud" label={ wp.i18n.__( 'Embed URL' ) } className="blocks-embed">
 							<p className="components-placeholder__error"><a href={ url }>{ url }</a></p>
 							<p className="components-placeholder__error">{ wp.i18n.__( 'Previews for this are unavailable in the editor, sorry!' ) }</p>
 						</Placeholder>
 					) : (
-						<Sandbox html={ oEmbedHtml } />
+						<HtmlEmbed html={ oEmbedHtml } />
 					) }
 					{ ( caption && caption.length > 0 ) || !! focus ? (
 						<Editable
