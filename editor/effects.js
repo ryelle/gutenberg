@@ -26,6 +26,7 @@ export default {
 			dispatch( {
 				type: 'REQUEST_POST_UPDATE_SUCCESS',
 				post: newPost,
+				isNew,
 			} );
 		} ).fail( ( err ) => {
 			dispatch( {
