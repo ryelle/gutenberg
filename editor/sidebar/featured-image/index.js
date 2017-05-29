@@ -12,7 +12,7 @@ import Button from 'components/button';
 import PanelBody from 'components/panel/body';
 import MediaUploadButton from 'blocks/media-upload-button';
 import Spinner from 'components/spinner';
-import ResponsiveImage from 'components/responsive-image';
+import ResponsiveWrapper from 'components/responsive-wrapper';
 
 /**
  * Internal dependencies
@@ -63,8 +63,8 @@ class FeaturedImage extends Component {
 					media,
 				} );
 			} )
-			.fail( ( error ) => {
-				if ( error && error.statusText === 'abort' ) {
+			.fail( ( xhr ) => {
+				if ( xhr.statusText === 'abort' ) {
 					return;
 				}
 				this.setState( {
@@ -87,12 +87,12 @@ class FeaturedImage extends Component {
 							type="image"
 						>
 							{ media &&
-								<ResponsiveImage
-									src={ media.source_url }
-									alt={ __( 'Featured image' ) }
+								<ResponsiveWrapper
 									naturalWidth={ media.media_details.width }
 									naturalHeight={ media.media_details.height }
-								/>
+								>
+									<img src={ media.source_url } alt={ __( 'Featured image' ) } />
+								</ResponsiveWrapper>
 							}
 							{ loading && <Spinner /> }
 						</MediaUploadButton>
