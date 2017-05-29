@@ -17,6 +17,7 @@ import IconButton from 'components/icon-button';
 import './style.scss';
 import PostStatus from '../post-status';
 import PostExcerpt from '../post-excerpt';
+import PostTaxonomies from '../post-taxonomies';
 import FeaturedImage from '../featured-image';
 import DiscussionPanel from '../discussion-panel';
 
@@ -33,6 +34,7 @@ const PostSettings = ( { toggleSidebar } ) => {
 				</div>
 			</PanelHeader>
 			<PostStatus />
+			<PostTaxonomies />
 			<FeaturedImage />
 			<PostExcerpt />
 			<DiscussionPanel />
