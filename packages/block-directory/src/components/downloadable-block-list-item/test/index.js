@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { shallow } from 'enzyme';
+import { render, fireEvent } from '@testing-library/react';
 
 /**
  * WordPress dependencies
@@ -11,9 +11,8 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import DownloadableBlockListItem from '../index';
-import DownloadableBlockHeader from '../../downloadable-block-header';
-import { item } from './fixtures';
+import DownloadableBlockListItem from '../';
+import { plugin } from '../../test/fixtures';
 
 jest.mock( '@wordpress/data/src/components/use-select', () => {
 	// This allows us to tweak the returned value on each test
@@ -28,22 +27,23 @@ describe( 'DownloadableBlockListItem', () => {
 			isInstallable: true,
 		} ) );
 
-		const wrapper = shallow(
-			<DownloadableBlockListItem onClick={ jest.fn() } item={ item } />
+		const { container } = render(
+			<DownloadableBlockListItem onClick={ jest.fn() } item={ plugin } />
 		);
 
-		expect( wrapper ).toMatchSnapshot();
+		expect( container ).toMatchSnapshot();
 	} );
 
 	it( 'should try to install the block plugin', () => {
 		const onClick = jest.fn();
-		const wrapper = shallow(
-			<DownloadableBlockListItem onClick={ onClick } item={ item } />
+		const { container } = render(
+			<DownloadableBlockListItem onClick={ onClick } item={ plugin } />
 		);
 
-		wrapper
-			.find( DownloadableBlockHeader )
-			.simulate( 'click', { event: {} } );
+		const button = container.querySelector(
+			'.block-directory-downloadable-block-list-item__item'
+		);
+		fireEvent.click( button );
 
 		expect( onClick ).toHaveBeenCalledTimes( 1 );
 	} );

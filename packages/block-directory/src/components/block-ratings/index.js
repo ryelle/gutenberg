@@ -9,7 +9,7 @@ import { _n, sprintf } from '@wordpress/i18n';
 import Stars from './stars';
 
 export const BlockRatings = ( { rating, ratingCount } ) => (
-	<div className="block-directory-block-ratings">
+	<span className="block-directory-block-ratings">
 		<Stars rating={ rating } />
 		<span
 			className="block-directory-block-ratings__rating-count"
@@ -21,7 +21,7 @@ export const BlockRatings = ( { rating, ratingCount } ) => (
 		>
 			({ ratingCount })
 		</span>
-	</div>
+	</span>
 );
 
 export default BlockRatings;

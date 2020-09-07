@@ -1,78 +1,85 @@
 /**
+ * External dependencies
+ */
+import { CompositeItem } from 'reakit';
+
+/**
  * WordPress dependencies
  */
+import { __, sprintf } from '@wordpress/i18n';
+import { Button, Spinner } from '@wordpress/components';
+import { createInterpolateElement } from '@wordpress/element';
+import { decodeEntities } from '@wordpress/html-entities';
 import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import DownloadableBlockAuthorInfo from '../downloadable-block-author-info';
-import DownloadableBlockHeader from '../downloadable-block-header';
-import DownloadableBlockInfo from '../downloadable-block-info';
-import DownloadableBlockNotice from '../downloadable-block-notice';
+import BlockRatings from '../block-ratings';
+import DownloadableBlockIcon from '../downloadable-block-icon';
 
-export default function DownloadableBlockListItem( { item, onClick } ) {
-	const { isLoading, isInstallable } = useSelect(
+function DownloadableBlockListItem( { composite, item, onClick } ) {
+	const { author, description, icon, rating, ratingCount, title } = item;
+
+	const { isInstalling, isInstallable } = useSelect(
 		( select ) => {
-			const { isInstalling, getErrorNoticeForBlock } = select(
+			const notice = select(
 				'core/block-directory'
-			);
-			const notice = getErrorNoticeForBlock( item.id );
+			).getErrorNoticeForBlock( item.id );
 			const hasFatal = notice && notice.isFatal;
 			return {
-				isLoading: isInstalling( item.id ),
+				isInstalling: select( 'core/block-directory' ).isInstalling(
+					item.id
+				),
 				isInstallable: ! hasFatal,
 			};
 		},
 		[ item ]
 	);
 
-	const {
-		icon,
-		title,
-		description,
-		rating,
-		activeInstalls,
-		ratingCount,
-		author,
-		humanizedUpdated,
-		authorBlockCount,
-		authorBlockRating,
-	} = item;
-
 	return (
-		<li className="block-directory-downloadable-block-list-item">
-			<article className="block-directory-downloadable-block-list-item__panel">
-				<header className="block-directory-downloadable-block-list-item__header">
-					<DownloadableBlockHeader
-						icon={ icon }
-						onClick={ onClick }
-						title={ title }
+		<div className="block-directory-downloadable-block-list-item">
+			<CompositeItem
+				role="option"
+				as={ Button }
+				{ ...composite }
+				className="block-directory-downloadable-block-list-item__item"
+				onClick={ ( event ) => {
+					event.preventDefault();
+					onClick();
+				} }
+				isBusy={ isInstalling }
+				disabled={ isInstalling || ! isInstallable }
+			>
+				<DownloadableBlockIcon icon={ icon } title={ title } />
+				<span className="block-directory-downloadable-block-list-item__details">
+					{ isInstalling && <Spinner /> }
+					<span className="block-directory-downloadable-block-list-item__title">
+						{ createInterpolateElement(
+							sprintf(
+								/* translators: %1$s: block title, %2$s: author name. */
+								__( '%1$s <span>by %2$s</span>' ),
+								decodeEntities( title ),
+								author
+							),
+							{
+								span: (
+									<span className="block-directory-downloadable-block-list-item__author" />
+								),
+							}
+						) }
+					</span>
+					<BlockRatings
 						rating={ rating }
 						ratingCount={ ratingCount }
-						isLoading={ isLoading }
-						isInstallable={ isInstallable }
 					/>
-				</header>
-				<section className="block-directory-downloadable-block-list-item__body">
-					<DownloadableBlockNotice
-						onClick={ onClick }
-						block={ item }
-					/>
-					<DownloadableBlockInfo
-						activeInstalls={ activeInstalls }
-						description={ description }
-						humanizedUpdated={ humanizedUpdated }
-					/>
-				</section>
-				<footer className="block-directory-downloadable-block-list-item__footer">
-					<DownloadableBlockAuthorInfo
-						author={ author }
-						authorBlockCount={ authorBlockCount }
-						authorBlockRating={ authorBlockRating }
-					/>
-				</footer>
-			</article>
-		</li>
+				</span>
+				<p className="block-directory-downloadable-block-list-item__desc">
+					{ decodeEntities( description ) }
+				</p>
+			</CompositeItem>
+		</div>
 	);
 }
+
+export default DownloadableBlockListItem;

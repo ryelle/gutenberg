@@ -1,61 +1,50 @@
 .block-directory-downloadable-block-list-item {
 	width: 100%;
-	padding: 0;
-	margin: 0;
-	display: flex;
-	flex-direction: row;
-	font-size: $default-font-size;
-	color: $gray-900;
-	align-items: flex-start;
-	justify-content: center;
-	background: transparent;
-	word-break: break-word;
-	border-top: $border-width solid $gray-200;
-	border-bottom: $border-width solid $gray-200;
-	transition: all 0.05s ease-in-out;
-	@include reduce-motion("transition");
-	position: relative;
-	text-align: left;
-	overflow: hidden;
 
-	& + .block-directory-downloadable-block-list-item {
-		border-top: none;
+	.block-directory-downloadable-block-icon {
+		margin-right: $grid-unit-20;
 	}
 }
 
-.block-directory-downloadable-block-list-item:last-child:not(:only-of-type) {
-	border-top: 0;
-}
-
-.block-directory-downloadable-block-list-item:last-child {
-	border-bottom: 0;
-}
-
-.block-directory-downloadable-block-list-item__panel {
-	display: flex;
-	flex-grow: 1;
-	flex-direction: column;
-}
-
-.block-directory-downloadable-block-list-item__header {
-	display: flex;
-	flex-direction: column;
-	padding: $grid-unit-20 $grid-unit-20 0;
-}
-
-.block-directory-downloadable-block-list-item__body {
-	display: flex;
-	flex-direction: column;
+.block-directory-downloadable-block-list-item__item {
 	padding: $grid-unit-20;
+	width: 100%;
+	height: auto;
+	text-align: left;
+	display: grid;
+	grid-template-columns: auto 1fr;
+
+	&:hover {
+		box-shadow: 0 0 0 $border-width-focus var(--wp-admin-theme-color);
+	}
+
+	&.is-busy {
+		background: transparent;
+	}
+
+	.components-spinner {
+		float: right;
+	}
 }
 
-.block-directory-downloadable-block-list-item__footer {
-	display: flex;
-	flex-direction: column;
-	padding: $grid-unit-20;
-	background-color: $gray-100;
+.block-directory-downloadable-block-list-item__details {
+	color: $gray-900;
 }
 
-.block-directory-downloadable-block-list-item__content {
+.block-directory-downloadable-block-list-item__title {
+	display: block;
+	margin-bottom: $grid-unit-10;
+}
+
+.block-directory-downloadable-block-list-item__author {
+	margin-top: $grid-unit-10;
 	color: $gray-700;
+}
+
+.block-directory-downloadable-block-list-item__desc {
+	display: block;
+	margin-top: $grid-unit-10;
+	grid-column-start: 1;
+	grid-column-end: span 2;
+	color: $gray-900;
 }

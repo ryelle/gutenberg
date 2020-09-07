@@ -10,6 +10,10 @@
 	}
 
 	svg {
-		fill: #ffb900;
+		fill: $gray-900;
+	}
+
+	.block-directory-block-ratings__star-empty {
+		fill: $gray-400;
 	}
 }
